@@ -107,7 +107,7 @@ class ImmutableDict(ImmutableDictMixin, dict):
 
 class Babel:
     """Central controller class that can be used to configure how
-    Flask-Babel behaves.  Each application that wants to use Flask-Babel
+    sanic-babel behaves.  Each application that wants to use sanic-babel
     has to create, or run :meth:`init_app` on, an instance of this class
     after the configuration was initialized.
     """
@@ -162,7 +162,7 @@ class Babel:
 
         #: a mapping of Babel datetime format strings that can be modified
         #: to change the defaults.  If you invoke :func:`format_datetime`
-        #: and do not provide any format string Flask-Babel will do the
+        #: and do not provide any format string sanic-babel will do the
         #: following things:
         #:
         #: 1.   look up ``date_formats['datetime']``.  By default ``'medium'``
@@ -370,9 +370,11 @@ def refresh(request):
         user.timezone = request.form['timezone']
         user.locale = request.form['locale']
         refresh(request)
-        flash(gettext('Language was changed', request))
+        jinja.flash(gettext('Language was changed', request))
 
-    Without that refresh, the :func:`~flask.flash` function would probably
+    NOTICE: :func:`jinja.flash` function is from `sanic-jinja2` package.
+
+    Without that refresh, the :func:`jinja.flash` function would probably
     return English text and a now German page.
     """
     for key in 'babel_locale', 'babel_tzinfo', 'babel_translations':
@@ -393,6 +395,7 @@ def force_locale(locale, request=None):
             send_email(gettext('Hello!', request), ...)
 
     :param locale: The locale to temporary switch to (ex: 'en_US').
+    :param request: the current Request object
     """
     if request is None:
         yield
