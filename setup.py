@@ -17,7 +17,7 @@ from setuptools import setup
 
 setup(
     name='sanic-babel',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/lixxu/sanic-babel',
     license='BSD',
     author='Lix Xu',
