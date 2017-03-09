@@ -1,11 +1,11 @@
-Sanic-Babel
+sanic-babel
 ===========
 
 .. module:: sanic_babel
 
 NOTICE: Most of the codes are from `flask-babel`_, and updated to match `Sanic`_.
 
-Sanic-Babel is an extension to `Sanic`_ that adds i18n and l10n support to
+sanic-babel is an extension to `Sanic`_ that adds i18n and l10n support to
 any Sanic application with the help of `babel`_, `pytz`_ and
 `speaklater`_.  It has builtin support for date formatting with timezone
 support as well as a very simple and friendly interface to :mod:`gettext`
@@ -16,13 +16,13 @@ Installation
 
 Install the extension with one of the following commands::
 
-    $ python3 -m pip install Sanic-Babel
+    $ python3 -m pip install sanic-babel
 
 or alternatively::
 
-    $ pip3 install Sanic-Babel
+    $ pip3 install sanic-babel
 
-Please note that Sanic-Babel requires Jinja 2.5.  If you are using an
+Please note that sanic-babel requires Jinja 2.5.  If you are using an
 older version you will have to upgrade or disable the Jinja support.
 
 
@@ -181,7 +181,7 @@ NOTICE: :func:`lazy_gettext` needs `request` before accessing actual string valu
 You can use `str(lazy_text(request))` or call `lazy_text(request)` once, then
 you can do others like `flask-babel`.
 
-So how does Sanic-Babel find the translations?  Well first you have to
+So how does sanic-babel find the translations?  Well first you have to
 create some.  Here is how you do it:
 
 Translating Applications

@@ -1,5 +1,5 @@
 """
-Sanic-Babel
+sanic-babel
 -----------
 
 Adds i18n/l10n support to Sanic applications with the help of the
