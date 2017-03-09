@@ -8,7 +8,7 @@ Adds i18n/l10n support to Sanic applications with the help of the
 Links
 `````
 
-* `documentation <http://pythonhosted.org/Sanic-Babel/>`_
+* `documentation <http://pythonhosted.org/sanic-babel/>`_
 
 .. _Babel: http://babel.edgewall.org/
 
