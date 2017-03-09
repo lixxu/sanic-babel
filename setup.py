@@ -28,7 +28,7 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=[
-        'sanic>=0.4.1',
+        'Sanic>=0.4.1',
         'Babel>=2.3',
         'Jinja2>=2.5',
     ],

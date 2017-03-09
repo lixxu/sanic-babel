@@ -13,4 +13,4 @@ The latest documentation is available [here][docs].
 [flask-babel]: http://github.com/mitsuhiko/flask-babel
 [babel]: https://github.com/python-babel/babel
 [pytz]: https://pypi.python.org/pypi/pytz/
-[docs]: https://pythonhosted.org/Sanic-Babel/
+[docs]: https://pythonhosted.org/sanic-babel/
