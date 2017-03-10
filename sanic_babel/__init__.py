@@ -264,7 +264,7 @@ class Babel:
         directories = self.app.config.get('BABEL_TRANSLATION_DIRECTORIES',
                                           'translations').split(';')
 
-        root_path = self.app.getattr('root_path', None)
+        root_path = getattr(self.app, 'root_path', None)
         for path in directories:
             if not os.path.isabs(path) and root_path is not None:
                 path = os.path.join(root_path, path)
