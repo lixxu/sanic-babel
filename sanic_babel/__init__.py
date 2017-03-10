@@ -224,8 +224,6 @@ class Babel:
         """Returns a list of all the locales translations exist for.  The
         list returned will be filled with actual locale objects and not just
         strings.
-
-        .. versionadded:: 0.6
         """
         result = []
 
@@ -311,8 +309,8 @@ def get_translations(request=None):
 
 def get_locale(request=None):
     """Returns the locale that should be used for this request as
-    `babel.Locale` object.  This returns `None` if used outside of
-    a request.
+    `babel.Locale` object.  This returns `Locale.parse('en')` if used outside
+    of a request.
     """
     if request is None:
         return Locale.parse('en')
@@ -563,7 +561,7 @@ def format_number(number, request=None):
     :param number: the number to format
     :param request: the current Request object
     :return: the formatted number
-    :rtype: unicode
+    :rtype: str
     """
     locale = get_locale(request)
     return numbers.format_number(number, locale=locale)
@@ -576,7 +574,7 @@ def format_decimal(number, format=None, request=None):
     :param format: the format to use
     :param request: the current Request object
     :return: the formatted number
-    :rtype: unicode
+    :rtype: str
     """
     locale = get_locale(request)
     return numbers.format_decimal(number, format=format, locale=locale)
@@ -595,7 +593,7 @@ def format_currency(number, currency, format=None, currency_digits=True,
                         [default: standard]
     :param request: the current Request object
     :return: the formatted number
-    :rtype: unicode
+    :rtype: str
     """
     locale = get_locale(request)
     return numbers.format_currency(
@@ -615,7 +613,7 @@ def format_percent(number, format=None, request=None):
     :param format: the format to use
     :param request: the current Request object
     :return: the formatted percent number
-    :rtype: unicode
+    :rtype: str
     """
     locale = get_locale(request)
     return numbers.format_percent(number, format=format, locale=locale)
@@ -628,7 +626,7 @@ def format_scientific(number, format=None, request=None):
     :param format: the format to use
     :param request: the current Request object
     :return: the formatted percent number
-    :rtype: unicode
+    :rtype: str
     """
     locale = get_locale(request)
     return numbers.format_scientific(number, format=format, locale=locale)
@@ -679,8 +677,6 @@ def ngettext(singular, plural, num, request=None, **variables):
 
 def pgettext(context, string, request=None, **variables):
     """Like :func:`gettext` but with a context.
-
-    .. versionadded:: 0.7
     """
     t = get_translations(request)
     if t is None:
@@ -692,8 +688,6 @@ def pgettext(context, string, request=None, **variables):
 
 def npgettext(context, singular, plural, num, request=None, **variables):
     """Like :func:`ngettext` but with a context.
-
-    .. versionadded:: 0.7
     """
     variables.setdefault('num', num)
     t = get_translations(request)
@@ -726,7 +720,5 @@ def lazy_gettext(string, **variables):
 def lazy_pgettext(context, string, **variables):
     """Like :func:`pgettext` but the string returned is lazy which means
     it will be translated when it is used as an actual string.
-
-    .. versionadded:: 0.7
     """
     return LazyString(pgettext, context, string, **variables)
