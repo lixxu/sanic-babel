@@ -1,4 +1,4 @@
-# Sanic Babel - 0.1.2
+# Sanic Babel - 0.1.3
 
 Most of the codes are from [flask-babel][], and updated to match sanic.
 

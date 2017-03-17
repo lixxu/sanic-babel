@@ -360,7 +360,7 @@ def get_timezone(request=None):
     return tzinfo
 
 
-def refresh(request):
+def refresh(request=None):
     """Refreshes the cached timezones and locale information.  This can
     be used to switch a translation between a request and if you want
     the changes to take place immediately, not just with the next request::
@@ -375,6 +375,9 @@ def refresh(request):
     Without that refresh, the :func:`jinja.flash` function would probably
     return English text and a now German page.
     """
+    if request is None:
+        return
+
     for key in 'babel_locale', 'babel_tzinfo', 'babel_translations':
         if key in request:
             request.pop(key)
