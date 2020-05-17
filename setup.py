@@ -13,33 +13,43 @@ Links
 .. _Babel: http://babel.edgewall.org/
 
 """
+import os
+import platform
+from pathlib import Path
 from setuptools import setup
 
+if platform.system().startswith("Windows"):
+    os.environ["SANIC_NO_UVLOOP"] = "yes"
+
+p = Path(__file__) / "../sanic_babel/__init__.py"
+with p.resolve().open(encoding="utf-8") as f:
+    for line in f:
+        if line.startswith("__version__ = "):
+            version = line.split("=")[-1].strip().replace("'", "")
+            break
+
 setup(
-    name='sanic-babel',
-    version='0.1.3',
-    url='https://github.com/lixxu/sanic-babel',
-    license='BSD',
-    author='Lix Xu',
-    author_email='xuzenglin@gmail.com',
-    description='babel support for sanic',
+    name="sanic-babel",
+    version=version.replace('"', ""),
+    url="https://github.com/lixxu/sanic-babel",
+    license="BSD",
+    author="Lix Xu",
+    author_email="xuzenglin@gmail.com",
+    description="babel support for sanic",
     long_description=__doc__,
-    packages=['sanic_babel'],
+    packages=["sanic_babel"],
     zip_safe=False,
-    platforms='any',
-    install_requires=[
-        'Sanic>=0.4.1',
-        'Babel>=2.3',
-        'Jinja2>=2.5',
-    ],
+    platforms="any",
+    install_requires=["Sanic>=0.4.1", "Babel>=2.3", "Jinja2>=2.5"],
     classifiers=[
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-    ]
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Operating System :: OS Independent",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+    ],
 )
