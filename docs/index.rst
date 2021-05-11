@@ -38,7 +38,7 @@ object after configuring the application::
     app = Sanic(__name__)
     app.config.from_pyfile('mysettings.cfg')
     babel = Babel(app, configure_jinja=False)
-    # or if app.jinja_env already there
+    # or if app.ctx.jinja_env already there
     # babel = Babel(app)
 
 The babel object itself can be used to configure the babel support
