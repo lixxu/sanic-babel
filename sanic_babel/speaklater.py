@@ -6,11 +6,11 @@ class LazyString:
     def __init__(self, func, *args, **kwargs):
         self._func = func
         self._args = args
-        kwargs['request'] = None
+        kwargs["request"] = None
         self._kwargs = kwargs
 
     def __call__(self, request):
-        self._kwargs['request'] = request
+        self._kwargs["request"] = request
         return self
 
     def __getattr__(self, attr):

@@ -15,19 +15,19 @@ from contextlib import contextmanager
 from datetime import datetime
 from itertools import repeat
 
-from babel import dates, numbers, support, Locale
+from babel import Locale, dates, numbers, support
 
 try:
     from pytz.gae import pytz
 except ImportError:
-    from pytz import timezone, UTC
+    from pytz import UTC, timezone
 else:
     timezone = pytz.timezone
     UTC = pytz.UTC
 
 from sanic_babel.speaklater import LazyString
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 
 def is_immutable(self):
@@ -167,12 +167,12 @@ class Babel:
         the constructor.
         """
         self.app = app
-        app.babel_instance = self
-        if not hasattr(app, "extensions"):
-            app.extensions = {}
+        app.ctx.babel_instance = self
+        if not hasattr(app.ctx, "extensions"):
+            app.ctx.extensions = {}
 
-        app.extensions["babel"] = self
-        app.babel_translations = {}  # cache translations per locale?
+        app.ctx.extensions["babel"] = self
+        app.ctx.babel_translations = {}  # cache translations per locale?
 
         app.config.setdefault("BABEL_DEFAULT_LOCALE", self._default_locale)
         app.config.setdefault("BABEL_DEFAULT_TIMEZONE", self._default_timezone)
@@ -193,10 +193,10 @@ class Babel:
         self.date_formats = self._date_formats
 
         if self._configure_jinja:
-            if not hasattr(app, "jinja_env"):
-                raise ValueError("app.jinja_env shoud be setup at first.")
+            if not hasattr(app.ctx, "jinja_env"):
+                raise ValueError("app.ctx.jinja_env shoud be setup at first.")
 
-            app.jinja_env.filters.update(
+            app.ctx.jinja_env.filters.update(
                 datetimeformat=format_datetime,
                 dateformat=format_date,
                 timeformat=format_time,
@@ -207,8 +207,8 @@ class Babel:
                 percentformat=format_percent,
                 scientificformat=format_scientific,
             )
-            app.jinja_env.add_extension("jinja2.ext.i18n")
-            app.jinja_env.newstyle_gettext = True
+            app.ctx.jinja_env.add_extension("jinja2.ext.i18n")
+            app.ctx.jinja_env.newstyle_gettext = True
             # reference for update context in jinja_env
             self._get_translations = get_translations
 
@@ -307,12 +307,12 @@ def get_translations(request=None):
     if translations is None:
         app = request.app
         locale = get_locale(request)
-        if locale in app.babel_translations:
-            request_["babel_translations"] = app.babel_translations[locale]
-            return app.babel_translations[locale]
+        if locale in app.ctx.babel_translations:
+            request_["babel_translations"] = app.ctx.babel_translations[locale]
+            return app.ctx.babel_translations[locale]
 
         translations = support.Translations()
-        babel = app.babel_instance
+        babel = app.ctx.babel_instance
         for dirname in babel.translation_directories:
             catalog = support.Translations.load(dirname, [locale])
             translations.merge(catalog)
@@ -324,7 +324,7 @@ def get_translations(request=None):
                 translations.plural = catalog.plural
 
         request_["babel_translations"] = translations
-        app.babel_translations[locale] = translations
+        app.ctx.babel_translations[locale] = translations
 
     return translations
 
@@ -340,7 +340,7 @@ def get_locale(request=None):
     request_ = get_request_container(request)
     locale = request_.get("babel_locale", None)
     if locale is None:
-        babel = request.app.babel_instance
+        babel = request.app.ctx.babel_instance
         if babel.locale_selector_func is None:
             locale = babel.default_locale
         else:
@@ -366,7 +366,7 @@ def get_timezone(request=None):
     request_ = get_request_container(request)
     tzinfo = request_.get("babel_tzinfo")
     if tzinfo is None:
-        babel = request.app.babel_instance
+        babel = request.app.ctx.babel_instance
         if babel.timezone_selector_func is None:
             tzinfo = babel.default_timezone
         else:
@@ -427,7 +427,7 @@ def force_locale(locale, request=None):
         yield
         return
 
-    babel = request.app.babel_instance
+    babel = request.app.ctx.babel_instance
     request_ = get_request_container(request)
     orig_locale_selector_func = babel.locale_selector_func
     orig_attrs = {}
@@ -452,7 +452,7 @@ def _get_format(key, format, request):
     if request is None:
         formats = Babel.default_date_formats.copy()
     else:
-        formats = request.app.extensions["babel"].date_formats
+        formats = request.app.ctx.extensions["babel"].date_formats
 
     if format is None:
         format = formats[key]

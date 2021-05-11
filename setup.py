@@ -16,11 +16,13 @@ Links
 import os
 import platform
 from pathlib import Path
+
 from setuptools import setup
 
 if platform.system().startswith("Windows"):
     os.environ["SANIC_NO_UVLOOP"] = "yes"
 
+version = ""
 p = Path(__file__) / "../sanic_babel/__init__.py"
 with p.resolve().open(encoding="utf-8") as f:
     for line in f:
@@ -40,7 +42,8 @@ setup(
     packages=["sanic_babel"],
     zip_safe=False,
     platforms="any",
-    install_requires=["Sanic>=0.4.1", "Babel>=2.3", "Jinja2>=2.5"],
+    install_requires=["Sanic>=21.3", "Babel>=2.3", "Jinja2>=2.5"],
+    python_requires=">=3.7",
     classifiers=[
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
@@ -48,8 +51,6 @@ setup(
         "Operating System :: OS Independent",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
         "Topic :: Software Development :: Libraries :: Python Modules",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3",
     ],
 )
